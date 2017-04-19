@@ -25,6 +25,8 @@ const readData = async () => {
   let recipes = _.uniqWith(data.filter(datum => datum.stage !== -1).map(datum => new Recipe(datum)), (a, b) => _.isEqual(a.identity, b.identity))
   console.log('unique recipes', recipes.length)
 
+  const recipesOrigin = _.clone(recipes)
+
   recipes = _.groupBy(recipes, 'recipeId')
 
   // check itemId
@@ -62,6 +64,7 @@ const readData = async () => {
   })
 
   console.log('all records', Object.keys(final).length)
+  console.log('by itemId', Object.keys(_.groupBy(recipesOrigin, 'itemId')).length)
 
   await fs.outputJson('./data/reciperecords.json', final)
 }
