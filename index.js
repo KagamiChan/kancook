@@ -49,9 +49,10 @@ const readData = async () => {
     })
 
     const recipeCount = (stages[0] || []).length
-    const recipeId = _.get(stages, '0.0.recipeId') || _.get(stages, '1.0.recipeId')
+    const recipeId = _.get(stages, '0.0.recipeId') || _.get(stages, '1.0.recipeId') || _.get(stages, '2.0.recipeId')
+    const itemName = _.get(stages, '0.0.itemName') || _.get(stages, '1.0.itemName') || _.get(stages, '2.0.itemName')
     if (!_.every(stages, stage => stage.length === recipeCount)) {
-      console.log('stage count not equal', recipeId, _.map(stages, (stage = []) => stage.length))
+      console.log('stage count not equal', recipeId, itemName, _.map(stages, (stage = []) => stage.length))
       count += 1
     }
   })
