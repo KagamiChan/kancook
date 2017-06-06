@@ -1,16 +1,13 @@
 import BSON from 'bson'
-import FS from 'fs-extra'
-import { promisifyAll } from 'bluebird'
+import fs from 'fs-extra'
 import _ from 'lodash'
 
 import Recipe from './recipe-model'
 
 const bson = new BSON()
 
-const fs = promisifyAll(FS)
-
 const readData = async () => {
-  const file = await fs.readFileAsync('./data/reciperecords.bson')
+  const file = await fs.readFile('./data/reciperecords.bson')
   const data = []
   let cur = 0
   while (true) {
