@@ -12,7 +12,7 @@ const appendOrSet = (object, path, value) => {
     return
   }
   if (v) {
-    _.setWith(object, path, v.concat(value), Object)
+    _.setWith(object, path, _.sortBy(v.concat(value)), Object)
   } else {
     _.setWith(object, path, [value], Object)
   }
@@ -52,8 +52,8 @@ const readData = async () => {
 
   _.each(recipes, (recipe) => {
     const basePath = (recipe.stage === 2 && recipe.upgradeToItemId > 0)
-      ? [recipe.itemId, recipe.stage, recipe.upgradeToItemId].map(num => String(num))
-      : [recipe.itemId, recipe.stage].map(num => String(num))
+      ? [recipe.itemId, recipe.stage, recipe.secretary, recipe.upgradeToItemId].map(num => String(num))
+      : [recipe.itemId, recipe.stage, recipe.secretary].map(num => String(num))
     _.each(['fuel', 'ammo', 'steel', 'bauxite',
       'reqItemId', 'reqItemCount', 'buildkit', 'remodelkit',
       'certainBuildkit', 'certainRemodelkit'], key =>
@@ -62,8 +62,7 @@ const readData = async () => {
     if (recipe.stage === 2) {
       verifyOrSet(res, [...basePath, 'upgradeToItemLevel'], recipe.upgradeToItemLevel)
     }
-    const daysPath = [...basePath, 'day', String(recipe.day)]
-    appendOrSet(res, daysPath, recipe.secretary)
+    appendOrSet(res, [...basePath, 'day'], recipe.day)
   })
 
   await fs.outputJson('./data/res.json', res, { spaces: 2 })
